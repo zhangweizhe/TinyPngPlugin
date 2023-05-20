@@ -12,6 +12,15 @@
         <toolWindow factoryClass="com.github.zhangweizhe.tinypngplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
     </extensions>
 
+    <actions>
+        <action
+            id="TinyPngAction"
+            class="com.github.zhangweizhe.tinypngplugin.action.TinyPngAction"
+            text="TinyPng">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+
     <applicationListeners>
         <listener class="com.github.zhangweizhe.tinypngplugin.listeners.MyFrameStateListener" topic="com.intellij.ide.FrameStateListener"/>
     </applicationListeners>

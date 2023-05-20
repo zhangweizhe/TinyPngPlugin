@@ -8,6 +8,7 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.vfs.VirtualFile
+import com.tinify.Tinify
 import kotlinx.coroutines.*
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.SystemIndependent
@@ -26,15 +27,17 @@ open class TinyPngAction: AnAction() {
         if (selectedFiles.isNullOrEmpty()) {
             return
         }
+        Tinify.setKey("o2cE734RVZPHS361lATPkLwcwGxGiG9D")
         ProgressManager.getInstance().run(object : Task.Backgroundable(e.project, "TinyPng", true) {
             override fun run(indicator: ProgressIndicator) {
-                indicator.text = "TinyPng"
+                indicator.text = "TinyPng..."
                 // 用 runBlocking 阻塞整个 Backgroundable
                 runBlocking {
                     val coroutineScope = CoroutineScope(Dispatchers.Default)
                     val async = coroutineScope.async {
                         runBlocking {
                             batchTiny(selectedFiles, e.project?.basePath) { finish, total ->
+                                indicator.text = "TinyPng $finish/$total"
                                 val ratio = finish.toDouble() / total
                                 indicator.fraction = ratio
                             }
@@ -68,7 +71,9 @@ open class TinyPngAction: AnAction() {
             selectedFiles.forEach {
                 val deferred = async { tinyOneImage(it, projectPath) }
                 deferred.invokeOnCompletion {
+                    // 监听每个任务的完成
                     finishCount++
+                    // 通知外面任务进度
                     tinyProgress.invoke(finishCount, total)
                 }
                 deferredList.add(deferred)
@@ -86,17 +91,16 @@ open class TinyPngAction: AnAction() {
      * 4、覆盖原图片
      */
     private fun tinyOneImage(selectFile: VirtualFile, projectPath: String) {
-        logger.warn("tinyOneImage ${selectFile.path}")
+//        logger.warn("tinyOneImage ${selectFile.path}")
         // 选中的文件
         val sourceFile = File(selectFile.path)
         // 1、复制到临时目录
         val tmpFile = copyToTmp(sourceFile, projectPath)
 
-        // 模拟耗时
-        val random = Random()
-        val nextInt = random.nextInt(10) + 1
-        logger.warn("tinyOneImage random $nextInt")
-        Thread.sleep(nextInt * 1000L)
+        // 2、上传压缩临时图片
+        // 3、下载压缩后的图片
+        // 4、覆盖原图片
+        Tinify.fromFile(tmpFile.absolutePath).toFile(sourceFile.absolutePath)
     }
 
     /**
