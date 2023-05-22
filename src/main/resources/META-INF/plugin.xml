@@ -10,6 +10,12 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.zhangweizhe.tinypngplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <applicationConfigurable parentId="tools"
+                                 instance="com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingConfigurable"
+                                 id="com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingConfigurable"
+                                 displayName="TinyPngPlugin"/>
+        <applicationService
+                serviceImplementation="com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingState"/>
     </extensions>
 
     <actions>

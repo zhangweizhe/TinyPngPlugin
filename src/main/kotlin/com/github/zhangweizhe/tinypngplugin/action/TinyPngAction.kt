@@ -71,6 +71,7 @@ open class TinyPngAction: AnAction() {
             selectedFiles.forEach {
                 val deferred = async { tinyOneImage(it, projectPath) }
                 deferred.invokeOnCompletion {
+                    // todo 异常处理
                     // 监听每个任务的完成
                     finishCount++
                     // 通知外面任务进度
