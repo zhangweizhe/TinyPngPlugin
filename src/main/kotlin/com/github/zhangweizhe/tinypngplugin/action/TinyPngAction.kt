@@ -20,6 +20,7 @@ import kotlinx.coroutines.*
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.SystemIndependent
 import java.io.File
+import java.text.DecimalFormat
 
 /**
  * 压缩入口 action
@@ -74,13 +75,22 @@ open class TinyPngAction: AnAction() {
             val deferredList = ArrayList<Deferred<Unit>>()
             var finishCount = 0
             val total = selectedFiles.size
+            // 选中的文件，压缩前总大小
+            var totalLengthBeforeTiny = 0L
+            // 选中的文件，压缩后总大小
+            var totalLengthAfterTiny = 0L
             selectedFiles.forEach { selectFile ->
+                // 压缩前大小
+                val lengthBeforeTiny = selectFile.length
                 val deferred = async { tinyOneImage(selectFile, projectPath) }
                 deferred.invokeOnCompletion {th ->
                     // 监听每个任务的完成
                     if (th != null) {
                         // 异常处理
                         notificationFail(th, selectFile.name)
+                    } else {
+                        totalLengthBeforeTiny += lengthBeforeTiny
+                        totalLengthAfterTiny += File(selectFile.path).length()
                     }
                     finishCount++
                     // 通知外面任务进度
@@ -90,7 +100,21 @@ open class TinyPngAction: AnAction() {
             }
             // 启动所有任务，并等待所有任务完成
             deferredList.awaitAll()
+            notifySuccess(totalLengthBeforeTiny, totalLengthAfterTiny)
         }
+    }
+
+    private fun notifySuccess(totalLengthBeforeTiny: Long, totalLengthAfterTiny: Long) {
+        val savedLength = totalLengthBeforeTiny - totalLengthAfterTiny
+        val savedRatio = savedLength.toFloat() / totalLengthBeforeTiny * 100
+        val df = DecimalFormat("#.##")
+        val notification = Notification(
+            NOTIFICATION_GROUP_ID,
+            "Tiny finish",
+            "Save ${df.format(savedRatio)}% (${df.format(savedLength.toFloat() / 1024)}kb)",
+            NotificationType.INFORMATION
+        )
+        Notifications.Bus.notify(notification)
     }
 
     /**
