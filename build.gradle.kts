@@ -107,8 +107,10 @@ tasks {
     }
 
     signPlugin {
-        certificateChain = environment("CERTIFICATE_CHAIN")
-        privateKey = environment("PRIVATE_KEY")
+//        certificateChain = environment("CERTIFICATE_CHAIN")
+//        privateKey = environment("PRIVATE_KEY")
+        certificateChainFile.set(file(environment("CERTIFICATE_CHAIN_FILE")))
+        privateKeyFile.set(file(environment("PRIVATE_KEY_FILE")))
         password = environment("PRIVATE_KEY_PASSWORD")
     }
 
