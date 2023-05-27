@@ -34,24 +34,24 @@ With this plugin, you can **compress multiple images with one click**, instead o
 - Get TinyPng api key
 
 Get your TinyPng api key from [TinyPng](https://tinypng.com/developers)
-![get api key](./capture/get_api_key.png)
+![get api key](https://raw.githubusercontent.com/zhangweizhe/TinyPngPlugin/main/capture/get_api_key.png)
 - Set api key
 
 Set your api key in Prefernces
-![set api key](./capture/set_api_key.png)
+![set api key](https://github.com/zhangweizhe/TinyPngPlugin/raw/main/capture/set_api_key.png)
 - Compress
 
 Select (**Multi-selection support**) the images that needs to be compressed, and click <kbd>TinyPng</kbd>
 
-![tiny.png](./capture/tiny.png)
+![tiny.png](https://github.com/zhangweizhe/TinyPngPlugin/raw/main/capture/tiny.png)
 
 And you will see the compress progress
 
-![progress](./capture/compress_progress.png)
+![progress](https://github.com/zhangweizhe/TinyPngPlugin/raw/main/capture/compress_progress.png)
 
 After all the images have been compressed, you will see how much space has been saved
 
-![result](./capture/result.png)
+![result](https://github.com/zhangweizhe/TinyPngPlugin/raw/main/capture/result.png)
 ---
 Plugin based on the [IntelliJ Platform Plugin Template][template].
 
