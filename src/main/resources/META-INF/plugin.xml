@@ -1,15 +1,13 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.zhangweizhe.tinypngplugin</id>
-    <name>TinyPngPlugin Template</name>
+    <name>TinyPng</name>
     <vendor>zhangweizhe</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.zhangweizhe.tinypngplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <applicationConfigurable parentId="tools"
                                  instance="com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingConfigurable"
                                  id="com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingConfigurable"
@@ -27,7 +25,4 @@
         </action>
     </actions>
 
-    <applicationListeners>
-        <listener class="com.github.zhangweizhe.tinypngplugin.listeners.MyFrameStateListener" topic="com.intellij.ide.FrameStateListener"/>
-    </applicationListeners>
 </idea-plugin>
