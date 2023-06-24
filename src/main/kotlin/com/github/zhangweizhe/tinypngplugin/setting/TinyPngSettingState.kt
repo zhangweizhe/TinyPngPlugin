@@ -18,7 +18,14 @@ class TinyPngSettingState: PersistentStateComponent<TinyPngSettingState> {
 
     var apiKey: String = ""
 
+    var compressMode: String = COMPRESS_MODE_TINY_PNG
+
     companion object {
+
+        const val COMPRESS_MODE_TINY_PNG = "TinyPng"
+
+        const val COMPRESS_MODE_PNG_QUANT = "PngQuant"
+
         fun getInstance(): TinyPngSettingState {
             return ApplicationManager.getApplication().getService(TinyPngSettingState::class.java)
         }

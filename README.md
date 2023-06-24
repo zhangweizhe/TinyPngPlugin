@@ -5,17 +5,9 @@
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
 
 <!-- Plugin description -->
-A handy image compression plugin, based on TinyPng.
-With this plugin, you can **compress multiple images with one click**, instead of the old way of:
+A handy image compression plugin, based on TinyPng or PngQuant
 
-<s>1. open the TinyPng website</s>
-
-<s>2. Upload the images to be compressed</s>
-
-<s>3. Compress the image</s>
-
-<s>4. Download the compressed images and overwrite them in your project</s>
-
+With this plugin, you can **compress multiple images with one click**
 <!-- Plugin description end -->
 
 ## Installation
@@ -31,15 +23,26 @@ With this plugin, you can **compress multiple images with one click**, instead o
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 ## Usage
+### Based on TinyPng
+In this way, network and tinyPng api key are required
+
+![tiny_png](https://raw.githubusercontent.com/zhangweizhe/TinyPngPlugin/main/capture/compress_mode_tiny_png.png)
 - Get TinyPng api key
 
 Get your TinyPng api key from [TinyPng](https://tinypng.com/developers)
 ![get api key](https://raw.githubusercontent.com/zhangweizhe/TinyPngPlugin/main/capture/get_api_key.png)
 - Set api key
 
-Set your api key in Prefernces
+Set your api key in Preferences
 ![set api key](https://github.com/zhangweizhe/TinyPngPlugin/raw/main/capture/set_api_key.png)
-- Compress
+
+### Based on PngQuant
+In this way, network or api key is not required
+
+![tiny_png](https://raw.githubusercontent.com/zhangweizhe/TinyPngPlugin/main/capture/compress_mode_tiny_png.png)
+
+
+### Compress
 
 Select (**Multi-selection support**) the images that needs to be compressed, and click <kbd>TinyPng</kbd>
 

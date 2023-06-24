@@ -1,5 +1,6 @@
 package com.github.zhangweizhe.tinypngplugin.setting
 
+import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.options.Configurable
 import javax.swing.JComponent
 
@@ -32,7 +33,17 @@ class TinyPngSettingConfigurable: Configurable {
         val oldApiKey = TinyPngSettingState.getInstance().apiKey
         // 输入中的 api key
         val editingApiKey = tinyPngSettingComponent?.getApiKeyText()
-        return oldApiKey != editingApiKey
+        val apiKeyChanged = oldApiKey != editingApiKey
+        if (apiKeyChanged) {
+            return true
+        }
+
+        // 旧的压缩方式
+        val oldCompressMode = TinyPngSettingState.getInstance().compressMode
+        // 新的压缩方式
+        val newCompressMode = tinyPngSettingComponent?.compressModeGroup?.selection?.actionCommand
+
+        return oldCompressMode != newCompressMode
     }
 
     /**
@@ -40,12 +51,25 @@ class TinyPngSettingConfigurable: Configurable {
      */
     override fun apply() {
         val tinyPngSettingState = TinyPngSettingState.getInstance()
-        tinyPngSettingState.apiKey = tinyPngSettingComponent?.getApiKeyText() ?: ""
+        tinyPngSettingComponent?.also {
+            tinyPngSettingState.apiKey = it.getApiKeyText() ?: ""
+            tinyPngSettingState.compressMode = it.compressModeGroup.selection.actionCommand
+        } ?: thisLogger().warn("apply fail, tinyPngSettingComponent is null")
     }
 
     override fun reset() {
         val tinyPngSettingState = TinyPngSettingState.getInstance()
+        // 重置 apiKey
         tinyPngSettingComponent?.setApiKeyText(tinyPngSettingState.apiKey)
+        // 重置压缩方式
+        val compressMode = tinyPngSettingState.compressMode
+        val elements = tinyPngSettingComponent?.compressModeGroup?.elements
+        if (elements != null) {
+            for (i in elements) {
+                tinyPngSettingComponent?.compressModeGroup
+                    ?.setSelected(i.model, i.actionCommand == compressMode)
+            }
+        }
     }
 
     /**

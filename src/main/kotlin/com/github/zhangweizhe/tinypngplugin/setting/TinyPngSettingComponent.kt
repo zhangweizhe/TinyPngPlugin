@@ -2,12 +2,18 @@ package com.github.zhangweizhe.tinypngplugin.setting
 
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
+import com.intellij.ui.components.panels.VerticalLayout
 import com.intellij.util.ui.FormBuilder
+import java.awt.ComponentOrientation
 import java.awt.Desktop
+import java.awt.LayoutManager
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.net.URI
+import javax.swing.ButtonGroup
+import javax.swing.ButtonModel
 import javax.swing.JPanel
+import javax.swing.JRadioButton
 
 /**
  * 设置的 view 层
@@ -34,9 +40,32 @@ class TinyPngSettingComponent {
         })
     }
 
+    private val compressModeTinyPng = JRadioButton("TinyPng (Network and api key required)")
+        .also {
+            it.model.actionCommand = TinyPngSettingState.COMPRESS_MODE_TINY_PNG
+        }
+    private val compressModePngQuant = JRadioButton("PngQuant (No network or api key required)")
+        .also {
+            it.model.actionCommand = TinyPngSettingState.COMPRESS_MODE_PNG_QUANT
+        }
+    val compressModeGroup = ButtonGroup()
+        .also {
+            it.add(compressModeTinyPng)
+            it.add(compressModePngQuant)
+        }
+    private val compressModePanel = JPanel(VerticalLayout(1))
+        .also {
+            it.componentOrientation = ComponentOrientation.LEFT_TO_RIGHT
+            it.add(compressModeTinyPng)
+            it.add(compressModePngQuant)
+        }
+
     val mainPanel: JPanel by lazy {
         FormBuilder.createFormBuilder()
-            .addLabeledComponent(JBLabel("Tiny png api key: "), apiKeyTextFiled, 1, true)
+            .addLabeledComponent(JBLabel("Compress Mode"), compressModePanel, 1, true)
+            .addLabeledComponent("", compressModeTinyPng, 1, false)
+            .addLabeledComponent("", compressModePngQuant, 1, false)
+            .addLabeledComponent(JBLabel("Tiny png api key: "), apiKeyTextFiled, 10, true)
             .addLabeledComponent(JBLabel("Get api key: "), getApiKeyLabel, 10, true)
             .addComponentFillVertically(JPanel(), 0)
             .panel

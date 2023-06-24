@@ -1,6 +1,10 @@
 package com.github.zhangweizhe.tinypngplugin.action
 
-import com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingConfigurable
+import com.github.zhangweizhe.tinypngplugin.AbsCompressTask
+import com.github.zhangweizhe.tinypngplugin.PngQuantTask
+import com.github.zhangweizhe.tinypngplugin.TinyPngTask
+import com.github.zhangweizhe.tinypngplugin.Utils.NOTIFICATION_GROUP_ID
+import com.github.zhangweizhe.tinypngplugin.Utils.notificationFail
 import com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingState
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
@@ -9,13 +13,10 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.diagnostic.thisLogger
-import com.intellij.openapi.options.ShowSettingsUtil
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.vfs.VirtualFile
-import com.tinify.AccountException
-import com.tinify.Tinify
 import kotlinx.coroutines.*
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.SystemIndependent
@@ -34,7 +35,6 @@ open class TinyPngAction: AnAction() {
         if (selectedFiles.isNullOrEmpty()) {
             return
         }
-        Tinify.setKey(TinyPngSettingState.getInstance().apiKey)
         ProgressManager.getInstance().run(object : Task.Backgroundable(e.project, "TinyPng", true) {
             override fun run(indicator: ProgressIndicator) {
                 indicator.text = "TinyPng..."
@@ -82,7 +82,9 @@ open class TinyPngAction: AnAction() {
             selectedFiles.forEach { selectFile ->
                 // 压缩前大小
                 val lengthBeforeTiny = selectFile.length
-                val deferred = async { tinyOneImage(selectFile, projectPath) }
+                val deferred = async {
+                    getCompressTask(selectFile, projectPath).doCompress()
+                }
                 deferred.invokeOnCompletion {th ->
                     // 监听每个任务的完成
                     if (th != null) {
@@ -104,6 +106,13 @@ open class TinyPngAction: AnAction() {
         }
     }
 
+    private fun getCompressTask(selectFile: VirtualFile, projectPath: @SystemIndependent @NonNls String): AbsCompressTask {
+        return when (TinyPngSettingState.getInstance().compressMode) {
+            TinyPngSettingState.COMPRESS_MODE_TINY_PNG -> TinyPngTask(selectFile, projectPath)
+            else -> PngQuantTask(selectFile, projectPath)
+        }
+    }
+
     private fun notifySuccess(totalLengthBeforeTiny: Long, totalLengthAfterTiny: Long) {
         val savedLength = totalLengthBeforeTiny - totalLengthAfterTiny
         val savedRatio = savedLength.toFloat() / totalLengthBeforeTiny * 100
@@ -117,73 +126,8 @@ open class TinyPngAction: AnAction() {
         Notifications.Bus.notify(notification)
     }
 
-    /**
-     * 压缩一张图片
-     * 1、把图片复制到临时文件夹 /build/tiny 中
-     * 2、上传压缩临时图片
-     * 3、下载压缩后的图片
-     * 4、覆盖原图片
-     */
-    private fun tinyOneImage(selectFile: VirtualFile, projectPath: String) {
-//        logger.warn("tinyOneImage ${selectFile.path}")
-        // 选中的文件
-        val sourceFile = File(selectFile.path)
-        // 1、复制到临时目录
-        val tmpFile = copyToTmp(sourceFile, projectPath)
 
-        kotlin.runCatching {
-            // 2、上传压缩临时图片
-            // 3、下载压缩后的图片
-            // 4、覆盖原图片
-            Tinify.fromFile(tmpFile.absolutePath).toFile(sourceFile.absolutePath)
-        }.onFailure {
-            notificationFail(it, sourceFile.name)
-        }
-    }
 
-    /**
-     * 错误通知
-     */
-    private fun notificationFail(th: Throwable, fileName: String) {
-        logger.error("Tiny $fileName fail", th)
-        val notification = Notification(
-            NOTIFICATION_GROUP_ID,
-            "Tiny $fileName fail",
-            th.message ?: "Unknown exception",
-            NotificationType.ERROR
-        )
-        if (th is AccountException) {
-            notification.setContent(th.message ?: "Invalid Api Key")
-            // apiKey 认证错误
-            notification.addAction(object : AnAction("Set api key") {
-                override fun actionPerformed(e: AnActionEvent) {
-                    // 跳转到设置
-                    ShowSettingsUtil.getInstance().showSettingsDialog(
-                        null,
-                        TinyPngSettingConfigurable::class.java,
-                        null
-                    )
-                }
-            })
-        }
-        Notifications.Bus.notify(notification)
-    }
-
-    /**
-     * 复制到临时目录
-     * @param sourceFile 源文件
-     * @return 复制后的临时文件
-     */
-    private fun copyToTmp(sourceFile: File, projectPath: String): File {
-        // 临时保存的文件名
-        val fileName = sourceFile.nameWithoutExtension +
-                "_" + System.currentTimeMillis() +
-                "." + sourceFile.extension
-        val tmpFile = File("$projectPath/build/tiny/$fileName")
-        tmpFile.mkdirs()
-        sourceFile.copyTo(tmpFile, true)
-        return tmpFile
-    }
 
     override fun update(e: AnActionEvent) {
         super.update(e)
@@ -210,7 +154,5 @@ open class TinyPngAction: AnAction() {
     companion object {
         // 图片后缀
         private val IMG_EXTENSIONS = setOf("png", "jpg", "jpeg")
-
-        private const val NOTIFICATION_GROUP_ID = "TinyPngPlugin"
     }
 }
