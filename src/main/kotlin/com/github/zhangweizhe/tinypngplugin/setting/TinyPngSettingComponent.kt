@@ -40,19 +40,34 @@ class TinyPngSettingComponent {
         })
     }
 
+    /**
+     * TinyPng 的单选框
+     */
     private val compressModeTinyPng = JRadioButton("TinyPng (Network and api key required)")
         .also {
             it.model.actionCommand = TinyPngSettingState.COMPRESS_MODE_TINY_PNG
         }
+
+    /**
+     * PngQuant 的单选框
+     */
     private val compressModePngQuant = JRadioButton("PngQuant (No network or api key required)")
         .also {
             it.model.actionCommand = TinyPngSettingState.COMPRESS_MODE_PNG_QUANT
         }
+
+    /**
+     * 单选框要放在同一个 ButtonGroup 中，才有单选的效果
+     */
     val compressModeGroup = ButtonGroup()
         .also {
             it.add(compressModeTinyPng)
             it.add(compressModePngQuant)
         }
+
+    /**
+     * 承载两个单选框的容器
+     */
     private val compressModePanel = JPanel(VerticalLayout(1))
         .also {
             it.componentOrientation = ComponentOrientation.LEFT_TO_RIGHT

@@ -1,16 +1,7 @@
 package com.github.zhangweizhe.tinypngplugin
 
-import com.github.zhangweizhe.tinypngplugin.action.TinyPngAction
-import com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingConfigurable
-import com.intellij.notification.Notification
-import com.intellij.notification.NotificationType
-import com.intellij.notification.Notifications
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.diagnostic.thisLogger
-import com.intellij.openapi.options.ShowSettingsUtil
+
 import com.intellij.openapi.vfs.VirtualFile
-import com.tinify.AccountException
 import java.io.File
 
 abstract class AbsCompressTask(
