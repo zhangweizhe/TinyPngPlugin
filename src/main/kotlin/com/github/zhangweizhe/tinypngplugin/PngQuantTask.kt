@@ -1,6 +1,7 @@
 package com.github.zhangweizhe.tinypngplugin
 
 import com.github.zhangweizhe.tinypngplugin.Utils.notificationFail
+import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.vfs.VirtualFile
 import java.io.BufferedReader
 import java.io.File
@@ -28,7 +29,15 @@ class PngQuantTask(private val selectFile: VirtualFile, private val projectPath:
         // 1、复制到临时目录
         val tmpFile = copyToTmp(sourceFile, projectPath)
 
-        val inputStream = javaClass.classLoader.getResourceAsStream("pngquant/pngquant")
+        val binaryFileName = if (SystemInfo.isMac) {
+            "pngquant"
+        } else if (SystemInfo.isWindows) {
+            "pngquant.exe"
+        } else {
+            ""
+        }
+
+        val inputStream = javaClass.classLoader.getResourceAsStream("pngquant/$binaryFileName")
             ?: throw FileNotFoundException("未找到资源文件")
 
         // 将二进制文件复制到临时目录
