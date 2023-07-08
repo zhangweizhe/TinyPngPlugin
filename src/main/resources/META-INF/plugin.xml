@@ -11,7 +11,7 @@
         <applicationConfigurable parentId="tools"
                                  instance="com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingConfigurable"
                                  id="com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingConfigurable"
-                                 displayName="TinyPngPlugin"/>
+                                 displayName="TinyPng"/>
         <applicationService
                 serviceImplementation="com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingState"/>
     </extensions>
@@ -21,7 +21,10 @@
             id="TinyPngAction"
             class="com.github.zhangweizhe.tinypngplugin.action.TinyPngAction"
             text="TinyPng">
+            <!-- project 右键菜单 -->
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <!-- vcs changes 右键菜单 -->
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
         </action>
     </actions>
 
