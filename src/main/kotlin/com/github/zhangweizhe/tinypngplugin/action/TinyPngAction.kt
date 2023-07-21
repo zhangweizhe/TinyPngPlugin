@@ -117,10 +117,12 @@ open class TinyPngAction: AnAction() {
         val savedLength = totalLengthBeforeTiny - totalLengthAfterTiny
         val savedRatio = savedLength.toFloat() / totalLengthBeforeTiny * 100
         val df = DecimalFormat("#.##")
+        val kbBefore = df.format(totalLengthBeforeTiny.toFloat() / 1024) + "kb"
+        val kbAfter = df.format(totalLengthAfterTiny.toFloat() / 1024) + "kb"
         val notification = Notification(
             NOTIFICATION_GROUP_ID,
             "Tiny finish",
-            "Save ${df.format(savedRatio)}% (${df.format(savedLength.toFloat() / 1024)}kb)",
+            "Save ${df.format(savedRatio)}% (${df.format(savedLength.toFloat() / 1024)}kb, $kbBefore -> $kbAfter)",
             NotificationType.INFORMATION
         )
         Notifications.Bus.notify(notification)
