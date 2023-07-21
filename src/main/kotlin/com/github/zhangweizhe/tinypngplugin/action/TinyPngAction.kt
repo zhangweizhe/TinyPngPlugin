@@ -153,6 +153,6 @@ open class TinyPngAction: AnAction() {
 
     companion object {
         // 图片后缀
-        private val IMG_EXTENSIONS = setOf("png", "jpg", "jpeg")
+        private val IMG_EXTENSIONS = setOf("png", "jpg", "jpeg", "webp")
     }
 }
