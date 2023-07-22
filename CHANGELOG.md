@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+## [0.0.5] - 2023-07-21
+
+### Added
+- Support webp
+
 ## [0.0.4] - 2023-07-06
 
 ### Added
@@ -24,7 +29,8 @@
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 
-[Unreleased]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.4...HEAD
+[Unreleased]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.5...HEAD
+[0.0.5]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.1...v0.0.2
