@@ -35,6 +35,7 @@ class TinyPngTask(private val selectFile: VirtualFile, private val projectPath: 
             // 3、下载压缩后的图片
             // 4、覆盖原图片
             Tinify.fromFile(tmpFile.absolutePath).toFile(sourceFile.absolutePath)
+            saveCompare(tmpFile.absolutePath, sourceFile.absolutePath)
         }.onFailure {
             notificationFail(it, sourceFile.name)
         }

@@ -5,6 +5,7 @@ import com.github.zhangweizhe.tinypngplugin.PngQuantTask
 import com.github.zhangweizhe.tinypngplugin.TinyPngTask
 import com.github.zhangweizhe.tinypngplugin.Utils.NOTIFICATION_GROUP_ID
 import com.github.zhangweizhe.tinypngplugin.Utils.notificationFail
+import com.github.zhangweizhe.tinypngplugin.compare.CompareDialog
 import com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingState
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
@@ -103,7 +104,14 @@ open class TinyPngAction: AnAction() {
             // 启动所有任务，并等待所有任务完成
             deferredList.awaitAll()
             notifySuccess(totalLengthBeforeTiny, totalLengthAfterTiny)
+            // 显示压缩前后的对比
+            showCompareDialog()
         }
+    }
+
+    private fun showCompareDialog() {
+        val compareDialog = CompareDialog()
+        compareDialog.isVisible = true
     }
 
     private fun getCompressTask(selectFile: VirtualFile, projectPath: @SystemIndependent @NonNls String): AbsCompressTask {

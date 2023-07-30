@@ -68,6 +68,8 @@ class PngQuantTask(private val selectFile: VirtualFile, private val projectPath:
                     }
                 }
                 notificationFail(RuntimeException(errorStr.toString()), sourceFile.name)
+            } else {
+                saveCompare(tmpFile.absolutePath, sourceFile.absolutePath)
             }
             exitCode
         }.onFailure {

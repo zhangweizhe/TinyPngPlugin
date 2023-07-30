@@ -1,6 +1,7 @@
 package com.github.zhangweizhe.tinypngplugin
 
 
+import com.github.zhangweizhe.tinypngplugin.compare.CompareManager
 import com.intellij.openapi.vfs.VirtualFile
 import java.io.File
 
@@ -27,6 +28,10 @@ abstract class AbsCompressTask(
         tmpFile.mkdirs()
         sourceFile.copyTo(tmpFile, true)
         return tmpFile
+    }
+
+    fun saveCompare(pathBeforeCompress: String, pathAfterCompress: String) {
+        CompareManager.instance.addCompare(pathBeforeCompress, pathAfterCompress)
     }
 
     companion object {
