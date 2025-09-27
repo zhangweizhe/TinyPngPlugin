@@ -10,6 +10,7 @@ import com.github.zhangweizhe.tinypngplugin.setting.TinyPngSettingState
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -105,7 +106,7 @@ open class TinyPngAction: AnAction() {
             deferredList.awaitAll()
             notifySuccess(totalLengthBeforeTiny, totalLengthAfterTiny)
             // 显示压缩前后的对比
-            showCompareDialog()
+//            showCompareDialog()
         }
     }
 
@@ -152,6 +153,10 @@ open class TinyPngAction: AnAction() {
                 return
             }
         }
+    }
+
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.BGT
     }
 
     /**

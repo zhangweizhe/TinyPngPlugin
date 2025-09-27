@@ -31,7 +31,7 @@ abstract class AbsCompressTask(
     }
 
     fun saveCompare(pathBeforeCompress: String, pathAfterCompress: String) {
-        CompareManager.instance.addCompare(pathBeforeCompress, pathAfterCompress)
+//        CompareManager.instance.addCompare(pathBeforeCompress, pathAfterCompress)
     }
 
     companion object {
