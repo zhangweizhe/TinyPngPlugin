@@ -9,6 +9,11 @@
 ### Added
 - Support webp
 
+## [0.0.6] - 2025-08-27
+
+### Added
+- compact new ide version
+
 ## [0.0.4] - 2023-07-06
 
 ### Added
@@ -30,6 +35,7 @@
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 
 [Unreleased]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.5...HEAD
+[0.0.6]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.4...v0.0.6
 [0.0.5]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/zhangweizhe/TinyPngPlugin/compare/v0.0.2...v0.0.3
